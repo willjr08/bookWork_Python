@@ -1,0 +1,44 @@
+[1mdiff --git a/lists/tests.py b/lists/tests.py[m
+[1mindex 1721c5c..ecc087c 100644[m
+[1m--- a/lists/tests.py[m
+[1m+++ b/lists/tests.py[m
+[36m@@ -1,5 +1,7 @@[m
+ from django.urls import resolve[m
+ from django.test import TestCase[m
+[32m+[m[32mfrom django.http import HttpRequest[m
+[32m+[m
+ from lists.views import home_page[m
+ [m
+ # Create your tests here.[m
+[36m@@ -8,4 +10,13 @@[m [mclass HomePageTest(TestCase):[m
+ [m
+     def test_root_url_resolves_to_home_page_view(self):[m
+         found = resolve('/')[m
+[31m-        self.assertEqual(found.func, home_page)[m
+\ No newline at end of file[m
+[32m+[m[32m        self.assertEqual(found.func, home_page)[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    def test_home_page_returns_correct_html(self):[m
+[32m+[m[32m        request = HttpRequest()[m[41m  [m
+[32m+[m[32m        response = home_page(request)[m[41m  [m
+[32m+[m[32m        html = response.content.decode('utf8')[m[41m  [m
+[32m+[m[32m        self.assertTrue(html.startswith('<html>'))[m[41m  [m
+[32m+[m[32m        self.assertIn('<title>To-Do lists</title>', html)[m[41m  [m
+[32m+[m[32m        self.assertTrue(html.endswith('</html>'))[m
+\ No newline at end of file[m
+[1mdiff --git a/lists/views.py b/lists/views.py[m
+[1mindex 444abe4..4152ba2 100644[m
+[1m--- a/lists/views.py[m
+[1m+++ b/lists/views.py[m
+[36m@@ -1,5 +1,6 @@[m
+ from django.shortcuts import render[m
+[32m+[m[32mfrom django.http import HttpResponse[m
+ [m
+ # Create your views here.[m
+[31m-def home_page():[m
+[31m-    pass[m
+\ No newline at end of file[m
+[32m+[m[32mdef home_page(request):[m
+[32m+[m[32m    return HttpResponse('<html><title>To-Do lists</title></html>')[m
+\ No newline at end of file[m
